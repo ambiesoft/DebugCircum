@@ -10,7 +10,7 @@
 
   <ItemGroup>
     <Reference Include="Ambiesoft.Profile">
-      <HintPath>..\..\..\Linkout\DNAssembly.NET4.5.2\Ambiesoft.Profile.dll</HintPath>
+      <HintPath>C:\Linkout\DNAssembly.NET4.5.2\Ambiesoft.Profile.dll</HintPath>
     </Reference>
   </ItemGroup>
 
