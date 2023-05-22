@@ -30,7 +30,15 @@ namespace DebugCircumExe
 
             try
             {
-                Process.Start(start);
+                var pro = Process.Start(start);
+                pro.WaitForExit();
+                if(pro.ExitCode != 0 )
+                {
+                    MessageBox.Show("Failed to launch 'dotnet DebugCircum.dll'. Please open a command prompt and run the command to see more information.",
+                                        Application.ProductName,
+                                        MessageBoxButtons.OK,
+                                        MessageBoxIcon.Error);
+                }
             }
             catch(Exception ex)
             {
