@@ -1,6 +1,7 @@
 ﻿using Ambiesoft;
 using System;
 using System.Diagnostics;
+using System.Reflection;
 
 namespace DebugCircum
 {
@@ -31,9 +32,10 @@ namespace DebugCircum
         {
             get
             {
+                string thisfile = Assembly.GetExecutingAssembly().Location;
                 return Path.Combine(
-                    Path.GetDirectoryName(Application.ExecutablePath) ?? string.Empty,
-                    Path.GetFileNameWithoutExtension(Application.ExecutablePath) + ".ini");
+                    Path.GetDirectoryName(thisfile) ?? string.Empty,
+                    Path.GetFileNameWithoutExtension(thisfile) + ".ini");
             }
         }
         static char getRandomLetter(RANDAM_LETTER rl)
