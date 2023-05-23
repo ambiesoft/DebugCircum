@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Diagnostics;
 using System.Text;
+using Ambiesoft;
+using System.Xml;
 
 namespace DebugCircumExe
 {
@@ -27,14 +29,29 @@ namespace DebugCircumExe
             start.WindowStyle = ProcessWindowStyle.Hidden;
             start.CreateNoWindow = true;
             start.UseShellExecute = false;
+            start.RedirectStandardOutput = true;
+            start.RedirectStandardError = true;
 
+            int retval = -1;
+            string output, err;
             try
             {
-                var pro = Process.Start(start);
-                pro.WaitForExit();
-                if(pro.ExitCode != 0 )
+                AmbLib.OpenCommandGetResult(
+                                start,
+                                out retval,
+                                out output,
+                                out err);
+                if (retval != 0 )
                 {
-                    MessageBox.Show("Failed to launch 'dotnet DebugCircum.dll'. Please open a command prompt and run the command to see more information.",
+                    var sb = new StringBuilder();
+                    sb.AppendLine("Failed to launch 'dotnet DebugCircum.dll.'");
+                    sb.AppendLine();
+                    sb.AppendLine("The standard output of the command:");
+                    sb.AppendLine(output);
+                    sb.AppendLine();
+                    sb.AppendLine("The standard error of the command:");
+                    sb.AppendLine(err);
+                    MessageBox.Show(AmbLib.ReplaceTripleReturn(sb.ToString()),
                                         Application.ProductName,
                                         MessageBoxButtons.OK,
                                         MessageBoxIcon.Error);
@@ -46,7 +63,7 @@ namespace DebugCircumExe
                 sb.AppendLine(ex.Message);
                 sb.AppendLine();
                 sb.AppendLine(start.FileName);
-                MessageBox.Show(ex.Message,
+                MessageBox.Show(AmbLib.ReplaceTripleReturn(sb.ToString()),
                     Application.ProductName,
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Error);
